@@ -1,6 +1,5 @@
 from flask import Flask,flash,redirect,request,url_for,render_template,session,send_file,send_from_directory, request
 from flask_session import Session
-#from flask_mysqldb import MySQL
 import mysql.connector
 from otp import genotp
 from cmail import sendmail
@@ -21,10 +20,9 @@ password=os.environ['RDS_PASSWORD']
 host=os.environ['RDS_HOSTNAME']
 port=os.environ['RDS_PORT']
 mydb=mysql.connector.connect(host=host,user=user,password=password,db=db,port=port)
-#mydb=mysql.connector.connect(host='localhost',user='root',password='admin')
 with mysql.connector.connect(host=host,user=user,password=password,db=db,port=port) as conn:
-     cursor=conn.cursor()
-     cursor.execute('create table if not exists readers(name varchar(20) primary key,mobile varchar(10) unique key,email varchar(40) unique key,password varchar(15))')
+cursor=conn.cursor()
+cursor.execute('create table if not exists readers(name varchar(20) primary key,mobile varchar(10) unique key,email varchar(40) unique key,password varchar(15))')
 Session(app)
 mysql=MySQL(app)
 @app.route('/')
@@ -175,4 +173,3 @@ def page_not_found(e):
     return render_template('404.html'), 404
 if __name__ == "__main__":
 	app.run()
-       
